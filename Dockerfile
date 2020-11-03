@@ -81,7 +81,11 @@ RUN conda install --quiet --yes \
 # Install IJulia as jovyan and then move the kernelspec out
 # to the system share location. Avoids problems with runtime UID change not
 # taking effect properly on the .local folder in the jovyan home dir.
-RUN julia -e 'import Pkg; Pkg.update(); Pkg.add("FFTW"); Pkg.add("GZip"); Pkg.add("PyPlot"); Pkg.precompile();' && \
+RUN julia -e 'import Pkg; Pkg.update(); Pkg.add("BlochSim"); Pkg.add("Distributions"); Pkg.add("PyPlot"); Pkg.precompile();' && \
+    julia -e 'import Pkg; Pkg.add("ForwardDiff"); Pkg.add("Gumbo"); Pkg.add("JLD") Pkg.add("LaTeXStrings")' && \
+    julia -e 'import Pkg; Pkg.add("HTTP"); Pkg.add("ImageTransformations"); Pkg.add("Interpolations"); Pkg.add("MAT"); Pkg.add("NNLS");' && \
+    julia -e 'import Pkg; Pkg.add("PERK"); Pkg.add("Plots"); Pkg.add("ProgressMeter"); Pkg.add("Random"); Pkg.add("ScanDesign"); ' && \
+    julia -e 'import Pkg; Pkg.add("Statistics"); Pkg.add("StatsBase"); Pkg.add("STFR"); Pkg.add("SymPy");' && \
     (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
     julia -e "using Pkg; pkg\"add IJulia\"; pkg\"precompile\"" && \
     # move kernelspec out of home \
@@ -144,10 +148,11 @@ RUN cd $HOME/work;\
                 nibabel \
                 nbconvert; \
     python -m sos_notebook.install;\
-    git clone --single-branch -b master https://github.com/Notebook-Factory/PhaseUnwrapping_book.git; \
-    cd PhaseUnwrapping_book;\
-    chmod -R 777 $HOME/work/PhaseUnwrapping_book
+    git clone --single-branch -b master https://github.com/zelenkastiot/STFR-MWF-binder.git\
+    cd STFR-MWF-binder;\
+    chmod -R 777 $HOME/work/STFR-MWF-binder
+    julia -e "include("setup.jl")"
     
-WORKDIR $HOME/work/PhaseUnwrapping_book
+WORKDIR $HOME/work/STFR-MWF-binder
 
 USER $NB_UID
