@@ -82,9 +82,9 @@ RUN conda install --quiet --yes \
 # to the system share location. Avoids problems with runtime UID change not
 # taking effect properly on the .local folder in the jovyan home dir.
 RUN julia -e 'import Pkg; Pkg.update(); Pkg.add("BlochSim"); Pkg.add("Distributions"); Pkg.add("PyPlot"); Pkg.precompile();' && \
-    julia -e 'import Pkg; Pkg.add("ForwardDiff"); Pkg.add("Gumbo"); Pkg.add("JLD") Pkg.add("LaTeXStrings")' && \
+    julia -e 'import Pkg; Pkg.add("ForwardDiff"); Pkg.add("Gumbo"); Pkg.add("JLD") Pkg.add("LaTeXStrings");' && \
     julia -e 'import Pkg; Pkg.add("HTTP"); Pkg.add("ImageTransformations"); Pkg.add("Interpolations"); Pkg.add("MAT"); Pkg.add("NNLS");' && \
-    julia -e 'import Pkg; Pkg.add("PERK"); Pkg.add("Plots"); Pkg.add("ProgressMeter"); Pkg.add("Random"); Pkg.add("ScanDesign"); ' && \
+    julia -e 'import Pkg; Pkg.add("PERK"); Pkg.add("Plots"); Pkg.add("ProgressMeter"); Pkg.add("Random"); Pkg.add("ScanDesign");' && \
     julia -e 'import Pkg; Pkg.add("Statistics"); Pkg.add("StatsBase"); Pkg.add("STFR"); Pkg.add("SymPy");' && \
     (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
     julia -e "using Pkg; pkg\"add IJulia\"; pkg\"precompile\"" && \
