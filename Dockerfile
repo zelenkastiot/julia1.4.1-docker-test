@@ -151,8 +151,9 @@ RUN cd $HOME/work;\
     git clone --single-branch -b master https://github.com/zelenkastiot/STFR-MWF-binder.git\
     cd STFR-MWF-binder;\
     chmod -R 777 $HOME/work/STFR-MWF-binder
-    julia -e "include("setup.jl")"
     
 WORKDIR $HOME/work/STFR-MWF-binder
 
 USER $NB_UID
+
+RUN julia -e "include("setup.jl");"
