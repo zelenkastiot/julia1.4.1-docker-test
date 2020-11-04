@@ -81,7 +81,7 @@ RUN conda install --quiet --yes \
 # Install IJulia as jovyan and then move the kernelspec out
 # to the system share location. Avoids problems with runtime UID change not
 # taking effect properly on the .local folder in the jovyan home dir.
-RUN julia -e 'import Pkg; Pkg.update(); Pkg.add("BlochSim"); Pkg.add("Distributions"); Pkg.add("PyPlot"); Pkg.precompile();' && \
+RUN julia -e 'import Pkg; Pkg.update(); Pkg.add("FFTW"); Pkg.add("GZip"); Pkg.add("PyPlot"); Pkg.precompile();' && \
     (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
     julia -e "using Pkg; pkg\"add IJulia\"; pkg\"precompile\"" && \
     # move kernelspec out of home \
@@ -144,10 +144,11 @@ RUN cd $HOME/work;\
                 nibabel \
                 nbconvert; \
     python -m sos_notebook.install;\
-    git clone --single-branch -b master https://github.com/zelenkastiot/STFR-MWF-binder.git\
-    cd STFR-MWF-binder;\
-    chmod -R 777 $HOME/work/STFR-MWF-binder
+    jupyter labextension install --minimize=False jupyterlab-sos; \
+    git clone --single-branch -b master https://github.com/zelenkastiot/julia1.4.1-docker-test.git; \
+    cd julia1.4.1-docker-test;\
+    chmod -R 777 $HOME/work/julia1.4.1-docker-test
     
-WORKDIR $HOME/work/STFR-MWF-binder
+WORKDIR $HOME/work/julia1.4.1-docker-test
 
 USER $NB_UID
